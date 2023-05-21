@@ -1,0 +1,34 @@
+.title{
+    text-align: center;
+}
+.navigation{
+    display:flex;
+    flex-direction: row;                
+    height: 45px;
+    background-color: #333;
+}
+.navigation li{
+    display: inline-block;
+    
+}
+.navigation a{
+    display:block;
+    padding: 10px;
+    color: white;     
+    font-smooth: Arial, sans-serif;          
+    text-align: center;
+    line-height: 5px;
+}
+table{
+    position: relative;
+    margin: 0 auto;
+    padding: 20px;
+    width: 100%;
+    text-align: left;
+}
+p{
+    position: relative;
+    margin: 0 auto;
+    padding: 20px;
+    width: 100%;               
+}
