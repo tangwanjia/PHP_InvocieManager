@@ -1,0 +1,41 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #9baab9;
+    padding: 4px;
+    text-align: center;
+}
+
+th {
+    background-color: rgb(240, 242, 244);
+}
+
+nav {
+    background-color: #535353;
+    padding: 10px;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 10px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    padding: 5px;
+}
+
+.form{
+    text-align: center;
+}
+
