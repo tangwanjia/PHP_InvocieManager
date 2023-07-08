@@ -1,6 +1,7 @@
 <?php
 require 'functions.php';
 
+
 function getStatusClass($status)
 {
     switch ($status) {
@@ -96,27 +97,25 @@ if (isset($_POST['delete_invoice'])) {
                             <td><?php echo $invoice['client']; ?></td>
                             <td><?php echo $invoice['email']; ?></td>
                             <td><?php echo $invoice['status']; ?></td>
-                            <td>
-                                <?php if(file_exists('posters/' . $invoice['number'] . '.pdf')) :?> 
-                                <form method="post">
-                                <input type="hidden" name="view" class="view" 
-                                src="posters/<?php echo $invoice['number']; ?>.pdf">
-                                alt="<?php echo $invoice['number']; ?>">
-                                
-                                <button type="submit">view</button>
-                            </form></td>  
-                            <?php endif ;?>
-
-                            <td><a href="update.php?number=<?php echo $invoice['number'] ?>">Edit</a></td>
-
-                            
+                            <td>   
+                            <?php /* <button class="view">        */ ?>                  
+                                <?php 
+                                    $fileName="posters/{$invoice['number']}.pdf";
+        
+                                    
+                                    if(file_exists("$fileName")){
+                                        echo '<a href="http://cst8257.test:8080/lab5/'. $fileName. '">View</a>';
+                                    }
+                                    //var_dump('of'); 
+                                    ?>                                                     
+                                <?php /* </button>     */ ?>                                                                                                                                                    
+                            </td>                                                                      
+                            <td><a href="update.php?number=<?php echo $invoice['number'] ?>">Edit</a></td>                            
                             <td><form method="post">
                                 <input type="hidden" name="delete_invoice" value="<?php echo $invoice['number'] ?>">
                                 <button type="submit">Delete</button>                                
                             </form>
-                            </td>
-
-                         
+                            </td>                       
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

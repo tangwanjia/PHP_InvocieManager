@@ -13,35 +13,27 @@ function getInvoiceNumber($length = 5) {
 }
 
 
-// process uploaded image for new invoice
-function saveFile($number){
+// process uploaded image/file for new invoice
+ function saveFile($Num){
     //file data $_File['poster'], poster is for the name in input we setup. retrieve the file from data.就是目录
     $poster =$_FILES['poster'];
 
     if($poster['error'] === UPLOAD_ERR_OK){
         //get file extenstion
         $ext = pathinfo($poster['name'], PATHINFO_EXTENSION);
-        $filename = $number . $ext;
+        $filename = $Num . '.'. $ext;
 
         if(!file_exists(('posters/'))){
             mkdir('posters/');  //check if the directory exists
         }
+        $dest = 'posters/' . $filename;
 
-        $dest = 'posters/' . '.' . $filename;
-
+        // if (file_exists($dest)) {
+        //     unlink($dest);
+        // }
         return move_uploaded_file($poster['tmp_name'], $dest);
     }
-    // $file='filename.pdf';
-    // $fileName = "filename.pdf";
-
-    // header('Content-type:application/pdf');
-    // header('Content-Dispostion:inline; filename="'. $fileName.'"');
-    // header('Content-Transfer-Encoding:binary');
-    // header('Accept-Ranges:bytes');
-    // @readfile($file);
-
     return false;
-
 }
 
 $errors = [];
@@ -84,20 +76,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $status_id = array_search($_POST['status'], array_column($statuses,'status')) + 1;
         //var_dump($status_id);
 
+        $Num = getInvoiceNumber();
             // create a new invoice
         $sql = "INSERT INTO invoices (number, client, email, amount, status_id)
                 VALUES (:num, :client, :email, :amount, :status_id)";
             $result = $db ->prepare($sql);
             $result->execute([
-                ':num'=> getInvoiceNumber(),
+                ':num'=> $Num,
                 ':client' => $_POST['client'],
                 ':email' => $_POST['email'],
                 ':amount' => $_POST['amount'],
                 ':status_id' => $status_id,
             ]);
 
-        $invoice_status = $db->lastInsertId();
-        saveFile($invoice_status);
+        //$invoice_status = $db->$Num();
+        saveFile($Num);
               
         // Redirect to index.php
         header('Location: index.php');
@@ -125,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </header>
     <main class="p-3">
         <h2>Add Invoice</h2>
-        <form method="POST" action="add.php" enctype="multipart/form-data">
+        <form method="POST" action="add.php" enctype="multipart/form-data"> 
             <div class="form-group">
                 <label for="client">Client:</label>
                 <input type="text" id="client" name="client" required class="form-control" value="<?php echo $client ?? ''; ?>">

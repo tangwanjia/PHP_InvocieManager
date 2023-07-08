@@ -11,6 +11,28 @@ if (empty($invoice)) {
     echo 'Invalid invoice number.';
     exit;
 }
+
+function saveFiles($Num){
+    //file data $_File['poster'], poster is for the name in input we setup. retrieve the file from data.就是目录
+    $poster =$_FILES['poster'];
+
+    if($poster['error'] === UPLOAD_ERR_OK){
+        //get file extenstion
+        $ext = pathinfo($poster['name'], PATHINFO_EXTENSION);
+        $filename = $Num . '.'. $ext;
+
+        if(!file_exists(('posters/'))){
+            mkdir('posters/');  //check if the directory exists
+        }
+        $dest = 'posters/' . $filename;
+
+        // if (file_exists($dest)) {
+        //     unlink($dest);
+        // }
+        return move_uploaded_file($poster['tmp_name'], $dest);
+    }
+    return false;
+}
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -63,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':status' => $index,
             ]);
 
-        saveFile($invoice['status']);
+        saveFiles($Num);
         
         // Redirect to index.php
         header('Location: index.php');
@@ -96,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </header>
     <main class="p-3">
         <h2>Update Invoice</h2>
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <input type="hidden" name="inv" value="<?php echo $_GET['number']; ?>">
                 <label for="client">Client:</label>
@@ -137,6 +159,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endif; ?>
             </div>
             <br>
+            <input 
+               type="file"
+               class="form-control"
+               name="poster"
+               accept=".pdf">
+                </br></br></br>
 
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
